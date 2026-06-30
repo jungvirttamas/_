@@ -18,8 +18,7 @@
       overflow: hidden;
     }
 
-    /* Starfield */
-    canvas {
+    canvas.stars {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -33,49 +32,20 @@
       padding: 2rem;
     }
 
-    /* Bird */
-    .bird-wrap {
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 0 30px rgba(100,160,255,0.3));
+    /* Bird scene wrapper */
+    .scene {
       position: relative;
-      animation: fly 6s ease-in-out infinite;
+      width: 260px;
+      height: 230px;
+      margin: 0 auto 1rem;
     }
 
-    @keyframes fly {
-      0%   { transform: translateX(-60px) translateY(0px); }
-      25%  { transform: translateX(0px)   translateY(-20px); }
-      50%  { transform: translateX(60px)  translateY(0px); }
-      75%  { transform: translateX(0px)   translateY(20px); }
-      100% { transform: translateX(-60px) translateY(0px); }
-    }
-
-    .bird-wrap svg { width: 200px; height: 200px; }
-
-    .eye-lid {
-      animation: blink 5s ease-in-out infinite;
-      transform-origin: center;
-    }
-    @keyframes blink {
-      0%, 88%, 100% { transform: scaleY(0); }
-      93% { transform: scaleY(1); }
-    }
-
-    /* Wing flap */
-    .wing-left {
-      transform-origin: 55px 115px;
-      animation: flapL 0.4s ease-in-out infinite alternate;
-    }
-    .wing-right {
-      transform-origin: 145px 115px;
-      animation: flapR 0.4s ease-in-out infinite alternate;
-    }
-    @keyframes flapL {
-      0%   { transform: rotate(0deg) scaleY(1); }
-      100% { transform: rotate(-35deg) scaleY(0.6); }
-    }
-    @keyframes flapR {
-      0%   { transform: rotate(0deg) scaleY(1); }
-      100% { transform: rotate(35deg) scaleY(0.6); }
+    /* The canvas bird flies on */
+    #birdCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
     }
 
     /* Motivational text */
@@ -104,7 +74,6 @@
       margin-bottom: 2rem;
     }
 
-    /* Countdown boxes */
     .countdown {
       display: flex;
       gap: 1rem;
@@ -173,113 +142,11 @@
 </head>
 <body>
 
-<canvas id="stars"></canvas>
+<canvas class="stars" id="stars"></canvas>
 
 <div class="container">
-
-  <!-- New bird: side-glancing, wing raised, determined look -->
-  <div class="bird-wrap">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="bg2" cx="40%" cy="35%">
-          <stop offset="0%" stop-color="#ffaa50"/>
-          <stop offset="55%" stop-color="#e06010"/>
-          <stop offset="100%" stop-color="#8a3500"/>
-        </radialGradient>
-        <radialGradient id="belly2" cx="50%" cy="35%">
-          <stop offset="0%" stop-color="#ffd080"/>
-          <stop offset="100%" stop-color="#d07020"/>
-        </radialGradient>
-        <radialGradient id="wing2" cx="30%" cy="30%">
-          <stop offset="0%" stop-color="#e07020"/>
-          <stop offset="100%" stop-color="#7a2e00"/>
-        </radialGradient>
-        <radialGradient id="eye2" cx="30%" cy="25%">
-          <stop offset="0%" stop-color="#4a2a10"/>
-          <stop offset="100%" stop-color="#0a0400"/>
-        </radialGradient>
-        <filter id="f1">
-          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" result="n"/>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="2" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="sh">
-          <feGaussianBlur stdDeviation="2"/>
-        </filter>
-      </defs>
-
-      <!-- Shadow -->
-      <ellipse cx="100" cy="192" rx="44" ry="6" fill="rgba(0,0,60,0.4)" filter="url(#sh)"/>
-
-      <!-- Feet -->
-      <g fill="#c04800" stroke="#8a3200" stroke-width="1">
-        <rect x="74" y="178" width="5" height="14" rx="2.5"/>
-        <rect x="72" y="189" width="9" height="2.5" rx="1.2"/>
-        <rect x="78" y="191" width="7" height="2.5" rx="1.2"/>
-        <rect x="66" y="191" width="7" height="2.5" rx="1.2"/>
-        <rect x="110" y="178" width="5" height="14" rx="2.5"/>
-        <rect x="108" y="189" width="9" height="2.5" rx="1.2"/>
-        <rect x="114" y="191" width="7" height="2.5" rx="1.2"/>
-        <rect x="102" y="191" width="7" height="2.5" rx="1.2"/>
-      </g>
-
-      <!-- Body -->
-      <circle cx="100" cy="115" r="72" fill="url(#bg2)" filter="url(#f1)"/>
-      <circle cx="100" cy="115" r="68" fill="url(#bg2)" opacity="0.5" filter="url(#f1)"/>
-
-      <!-- Belly -->
-      <ellipse cx="102" cy="128" rx="36" ry="42" fill="url(#belly2)" opacity="0.75"/>
-
-      <!-- Left wing — flapping -->
-      <g class="wing-left">
-        <ellipse cx="36" cy="115" rx="38" ry="14" fill="url(#wing2)" transform="rotate(-20 36 115)" filter="url(#f1)" opacity="0.9"/>
-        <ellipse cx="22" cy="100" rx="20" ry="9" fill="#c05008" transform="rotate(-30 22 100)" filter="url(#f1)"/>
-      </g>
-
-      <!-- Right wing — flapping -->
-      <g class="wing-right">
-        <ellipse cx="164" cy="115" rx="38" ry="14" fill="url(#wing2)" transform="rotate(20 164 115)" filter="url(#f1)" opacity="0.85"/>
-        <ellipse cx="178" cy="100" rx="20" ry="9" fill="#c05008" transform="rotate(30 178 100)" filter="url(#f1)"/>
-      </g>
-
-      <!-- Head fluffy -->
-      <circle cx="100" cy="82" r="50" fill="#e06010" filter="url(#f1)" opacity="0.55"/>
-
-      <!-- Crest — spiky/determined -->
-      <ellipse cx="86" cy="38" rx="8" ry="20" fill="#c04808" transform="rotate(-30 86 38)" filter="url(#f1)"/>
-      <ellipse cx="100" cy="30" rx="9" ry="22" fill="#d05808" filter="url(#f1)"/>
-      <ellipse cx="114" cy="36" rx="8" ry="18" fill="#c04808" transform="rotate(25 114 36)" filter="url(#f1)"/>
-      <ellipse cx="120" cy="44" rx="6" ry="14" fill="#b03800" transform="rotate(45 120 44)" filter="url(#f1)"/>
-
-      <!-- Eye whites — one big (facing slightly right, determined) -->
-      <circle cx="112" cy="88" r="18" fill="white"/>
-      <circle cx="80" cy="90" r="14" fill="white"/>
-      <!-- Pupils — looking slightly to the side (determined gaze) -->
-      <circle cx="116" cy="91" r="12" fill="url(#eye2)"/>
-      <circle cx="83" cy="93" r="9" fill="url(#eye2)"/>
-      <!-- Shine -->
-      <circle cx="109" cy="84" r="4.5" fill="white" opacity="0.85"/>
-      <circle cx="77" cy="87" r="3.5" fill="white" opacity="0.85"/>
-      <circle cx="111" cy="82" r="2" fill="white"/>
-      <!-- Blink -->
-      <rect class="eye-lid" x="94" y="70" width="36" height="36" rx="18" fill="#e06010"/>
-      <rect class="eye-lid" x="66" y="76" width="28" height="28" rx="14" fill="#e06010"/>
-
-      <!-- Determined little frown/beak -->
-      <path d="M95 110 L102 122 L109 110 Z" fill="#d07010" stroke="#b05000" stroke-width="1"/>
-      <path d="M95 110 L109 110" stroke="#b05000" stroke-width="1.5"/>
-
-      <!-- Cheek blush -->
-      <ellipse cx="128" cy="100" rx="10" ry="6" fill="#ff6030" opacity="0.2"/>
-      <ellipse cx="68" cy="104" rx="8" ry="5" fill="#ff6030" opacity="0.2"/>
-
-      <!-- Small star near raised wing tip -->
-      <polygon points="22,58 24,64 30,64 25,68 27,74 22,70 17,74 19,68 14,64 20,64"
-        fill="#ffe080" opacity="0.85" filter="url(#glow)"/>
-    </svg>
+  <div class="scene">
+    <canvas id="birdCanvas" width="260" height="230"></canvas>
   </div>
 
   <div class="motto">Keep going.</div>
@@ -287,93 +154,430 @@
   <div class="deadline">Július 31.</div>
 
   <div class="countdown" id="countdown">
-    <div class="box">
-      <div class="num" id="days">--</div>
-      <div class="label">Days</div>
-    </div>
+    <div class="box"><div class="num" id="days">--</div><div class="label">Days</div></div>
     <div class="separator">:</div>
-    <div class="box">
-      <div class="num" id="hours">--</div>
-      <div class="label">Hours</div>
-    </div>
+    <div class="box"><div class="num" id="hours">--</div><div class="label">Hours</div></div>
     <div class="separator">:</div>
-    <div class="box">
-      <div class="num" id="minutes">--</div>
-      <div class="label">Minutes</div>
-    </div>
+    <div class="box"><div class="num" id="minutes">--</div><div class="label">Minutes</div></div>
     <div class="separator">:</div>
-    <div class="box">
-      <div class="num" id="seconds">--</div>
-      <div class="label">Seconds</div>
-    </div>
+    <div class="box"><div class="num" id="seconds">--</div><div class="label">Seconds</div></div>
   </div>
 
   <div class="done-msg" id="done">🎉 You made it! 🎉</div>
-
   <footer>PureBreathe PRO &nbsp;·&nbsp; 2026</footer>
 </div>
 
 <script>
-  // Starfield
-  const canvas = document.getElementById('stars');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// ── STARFIELD ──────────────────────────────────────────────
+const starCanvas = document.getElementById('stars');
+const sc = starCanvas.getContext('2d');
+let stars = [];
+function resizeStars() {
+  starCanvas.width = window.innerWidth;
+  starCanvas.height = window.innerHeight;
+  stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({ x: Math.random()*starCanvas.width, y: Math.random()*starCanvas.height,
+      r: Math.random()*1.5+0.2, speed: Math.random()*0.004+0.002, phase: Math.random()*Math.PI*2 });
   }
-
-  function initStars() {
-    stars = [];
-    for (let i = 0; i < 200; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.5 + 0.2,
-        a: Math.random(),
-        speed: Math.random() * 0.005 + 0.002,
-        phase: Math.random() * Math.PI * 2
-      });
-    }
-  }
-
-  function drawStars(t) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      const alpha = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed * 60 + s.phase));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(180,220,255,${alpha})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(drawStars);
-  }
-
-  resize();
-  initStars();
-  window.addEventListener('resize', () => { resize(); initStars(); });
+}
+function drawStars(t) {
+  sc.clearRect(0,0,starCanvas.width,starCanvas.height);
+  stars.forEach(s => {
+    const a = 0.25 + 0.75*(0.5+0.5*Math.sin(t*s.speed*60+s.phase));
+    sc.beginPath(); sc.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sc.fillStyle=`rgba(180,220,255,${a})`; sc.fill();
+  });
   requestAnimationFrame(drawStars);
+}
+resizeStars();
+window.addEventListener('resize', resizeStars);
+requestAnimationFrame(drawStars);
 
-  // Countdown
-  const target = new Date('2026-07-31T23:59:59');
-  function pad(n) { return String(n).padStart(2, '0'); }
+// ── BIRD ANIMATION ─────────────────────────────────────────
+const bc = document.getElementById('birdCanvas');
+const bx = bc.getContext('2d');
+const W = bc.width, H = bc.height;
 
-  function tick() {
-    const diff = target - new Date();
-    if (diff <= 0) {
-      document.getElementById('countdown').style.display = 'none';
-      document.getElementById('done').style.display = 'block';
-      return;
-    }
-    document.getElementById('days').textContent    = pad(Math.floor(diff / 86400000));
-    document.getElementById('hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
-    document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
-    document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+// Animation phases (total loop = 10s)
+// 0–4s:   happy flying bird
+// 4–5s:   fire appears, bird looks alarmed (eyes wide)
+// 5–7s:   bird slowly turns golden/brown (roasting)
+// 7–8.5s: full grilled chicken
+// 8.5–10s: back to fluffy orange (poof!)
+
+const LOOP = 10000; // ms
+let startTime = null;
+let flapAngle = 0;
+let blinkTimer = 0;
+let blinking = false;
+
+function easeInOut(t) { return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
+function lerp(a,b,t) { return a+(b-a)*t; }
+function clamp(v,a,b) { return Math.max(a,Math.min(b,v)); }
+
+function lerpColor(c1, c2, t) {
+  const h = x => parseInt(x,16);
+  const r1=h(c1.slice(1,3)),g1=h(c1.slice(3,5)),b1=h(c1.slice(5,7));
+  const r2=h(c2.slice(1,3)),g2=h(c2.slice(3,5)),b2=h(c2.slice(5,7));
+  return `rgb(${Math.round(lerp(r1,r2,t))},${Math.round(lerp(g1,g2,t))},${Math.round(lerp(b1,b2,t))})`;
+}
+
+// Draw fluffy circle (approximated with wobbly path)
+function fluffyCircle(ctx, cx, cy, r, wobble, color) {
+  ctx.beginPath();
+  const steps = 32;
+  for (let i=0; i<=steps; i++) {
+    const angle = (i/steps)*Math.PI*2;
+    const w = wobble * (Math.sin(angle*3+1.2)*0.5 + Math.sin(angle*5)*0.3 + Math.sin(angle*7)*0.2);
+    const rr = r + w;
+    const x = cx + Math.cos(angle)*rr;
+    const y = cy + Math.sin(angle)*rr;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function drawFlame(ctx, x, y, h, phase) {
+  const flames = [
+    {ox:-18, w:14, h:h*0.8, p:0},
+    {ox:0,   w:18, h:h,     p:1.1},
+    {ox:18,  w:14, h:h*0.9, p:2.2},
+    {ox:-9,  w:10, h:h*0.6, p:0.7},
+    {ox:9,   w:10, h:h*0.65,p:1.9},
+  ];
+  flames.forEach(f => {
+    const flicker = 1 + 0.15*Math.sin(phase*8+f.p);
+    const fh = f.h * flicker;
+    const grad = ctx.createRadialGradient(x+f.ox, y, 2, x+f.ox, y-fh*0.5, fh);
+    grad.addColorStop(0, 'rgba(255,240,80,0.95)');
+    grad.addColorStop(0.3, 'rgba(255,140,20,0.85)');
+    grad.addColorStop(0.7, 'rgba(220,50,10,0.6)');
+    grad.addColorStop(1, 'rgba(180,20,0,0)');
+    ctx.beginPath();
+    ctx.moveTo(x+f.ox-f.w/2, y);
+    ctx.bezierCurveTo(x+f.ox-f.w*0.6, y-fh*0.4, x+f.ox-f.w*0.2, y-fh*0.8, x+f.ox, y-fh);
+    ctx.bezierCurveTo(x+f.ox+f.w*0.2, y-fh*0.8, x+f.ox+f.w*0.6, y-fh*0.4, x+f.ox+f.w/2, y);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+  });
+}
+
+function drawSmoke(ctx, x, y, alpha) {
+  for (let i=0; i<5; i++) {
+    const sy = y - 20 - i*16;
+    const sx = x + Math.sin(i*1.3)*12;
+    const r = 6+i*4;
+    ctx.beginPath();
+    ctx.arc(sx, sy, r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(180,180,180,${alpha*(0.25-i*0.04)})`;
+    ctx.fill();
+  }
+}
+
+function drawSweat(ctx, x, y) {
+  // sweat drops
+  [[x+38,y-10],[x-38,y-5]].forEach(([sx,sy]) => {
+    ctx.beginPath();
+    ctx.arc(sx, sy+4, 4, 0, Math.PI*2);
+    ctx.moveTo(sx-3, sy+4);
+    ctx.lineTo(sx, sy);
+    ctx.lineTo(sx+3, sy+4);
+    ctx.fillStyle = 'rgba(100,180,255,0.8)';
+    ctx.fill();
+  });
+}
+
+// Grilled chicken shape
+function drawChicken(ctx, cx, cy, t) {
+  // body — plump oval, golden brown
+  const bodyColor = lerpColor('#c05008', '#7a3000', t);
+  const skinColor = lerpColor('#d4820a', '#a05020', t);
+  ctx.save();
+  // drum sticks
+  ctx.fillStyle = lerpColor('#b04000','#5a1800',t);
+  ctx.beginPath(); ctx.ellipse(cx-30, cy+38, 8, 18, -0.4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+30, cy+38, 8, 18, 0.4, 0, Math.PI*2); ctx.fill();
+  // bone nubs
+  ctx.fillStyle = '#f0e0c0';
+  ctx.beginPath(); ctx.arc(cx-34, cy+54, 5, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx+34, cy+54, 5, 0, Math.PI*2); ctx.fill();
+  // main body
+  const bg = ctx.createRadialGradient(cx-10, cy-10, 5, cx, cy, 52);
+  bg.addColorStop(0, lerpColor('#e09030','#b06820',t));
+  bg.addColorStop(0.5, lerpColor('#c06010','#8a3808',t));
+  bg.addColorStop(1, lerpColor('#7a3000','#3a1000',t));
+  ctx.beginPath(); ctx.ellipse(cx, cy+5, 50, 48, 0, 0, Math.PI*2);
+  ctx.fillStyle = bg; ctx.fill();
+  // grill marks
+  ctx.strokeStyle = `rgba(40,10,0,${t*0.6})`;
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  [[-20,0],[0,0],[20,0]].forEach(([dx]) => {
+    ctx.beginPath();
+    ctx.moveTo(cx+dx-12, cy-15);
+    ctx.lineTo(cx+dx+12, cy+15);
+    ctx.stroke();
+  });
+  // wings (stubby)
+  ctx.fillStyle = lerpColor('#b05008','#6a2800',t);
+  ctx.beginPath(); ctx.ellipse(cx-46, cy, 14, 22, -0.3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+46, cy, 14, 22, 0.3, 0, Math.PI*2); ctx.fill();
+  // head
+  const hg = ctx.createRadialGradient(cx+5, cy-52, 3, cx, cy-50, 26);
+  hg.addColorStop(0, lerpColor('#d07010','#9a4010',t));
+  hg.addColorStop(1, lerpColor('#8a3800','#3a1000',t));
+  ctx.beginPath(); ctx.arc(cx, cy-50, 26, 0, Math.PI*2);
+  ctx.fillStyle = hg; ctx.fill();
+  // eyes — Xs when fully cooked
+  if (t > 0.7) {
+    ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3;
+    [[cx-10,cy-52],[cx+10,cy-52]].forEach(([ex,ey]) => {
+      ctx.beginPath(); ctx.moveTo(ex-4,ey-4); ctx.lineTo(ex+4,ey+4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ex+4,ey-4); ctx.lineTo(ex-4,ey+4); ctx.stroke();
+    });
+  } else {
+    ctx.fillStyle = 'white';
+    ctx.beginPath(); ctx.arc(cx-10, cy-52, 7, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+10, cy-52, 7, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath(); ctx.arc(cx-9, cy-51, 4, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+11, cy-51, 4, 0, Math.PI*2); ctx.fill();
+  }
+  // beak
+  ctx.fillStyle = lerpColor('#d08020','#8a5010',t);
+  ctx.beginPath(); ctx.moveTo(cx-5,cy-38); ctx.lineTo(cx,cy-30); ctx.lineTo(cx+5,cy-38); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function drawBird(ctx, cx, cy, flapA, blink, roast, alarm, phase) {
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  if (roast > 0.01) {
+    // Crossfade between fluffy and chicken
+    ctx.globalAlpha = roast;
+    drawChicken(ctx, 0, 0, roast);
+    ctx.globalAlpha = 1;
   }
 
-  tick();
-  setInterval(tick, 1000);
+  if (roast < 0.99) {
+    ctx.globalAlpha = 1 - roast;
+
+    // Body color shifts orange→red when alarmed
+    const bodyCol = alarm > 0
+      ? lerpColor('#e06010', '#ff2000', Math.min(alarm*2,1))
+      : '#e06010';
+
+    // Fluffy body
+    fluffyCircle(ctx, 0, 18, 58, 8, lerpColor('#ffaa50', '#c05008', roast*0.5+alarm*0.3));
+    fluffyCircle(ctx, 0, 18, 54, 7, lerpColor('#e06010', '#a03808', roast*0.5+alarm*0.3));
+
+    // Belly
+    const bellyG = ctx.createRadialGradient(-5, 5, 5, 0, 15, 38);
+    bellyG.addColorStop(0, lerpColor('#ffd080','#ff8020',alarm*0.5));
+    bellyG.addColorStop(1, lerpColor('#d07020','#c04010',alarm*0.3));
+    ctx.beginPath(); ctx.ellipse(2, 28, 30, 36, 0, 0, Math.PI*2);
+    ctx.fillStyle = bellyG; ctx.fill();
+
+    // Wings flapping
+    ctx.save();
+    ctx.translate(-64, 18);
+    ctx.rotate(flapA);
+    fluffyCircle(ctx, 0, 0, 22, 5, lerpColor('#c05008','#8a2000',roast*0.3+alarm*0.2));
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(64, 18);
+    ctx.rotate(-flapA);
+    fluffyCircle(ctx, 0, 0, 22, 5, lerpColor('#c05008','#8a2000',roast*0.3+alarm*0.2));
+    ctx.restore();
+
+    // Head
+    fluffyCircle(ctx, 0, -38, 38, 7, lerpColor('#e06010','#c03008',roast*0.3+alarm*0.2));
+
+    // Crest
+    [-22, -8, 8, 22].forEach((ox, i) => {
+      const h = [18,22,20,14][i];
+      const a = [-0.5,-0.1,0.1,0.4][i];
+      ctx.save(); ctx.translate(ox, -70); ctx.rotate(a);
+      fluffyCircle(ctx, 0, 0, h*0.45, 4, lerpColor('#c04808','#a02000',roast*0.3));
+      ctx.restore();
+    });
+
+    // Eyes — wide when alarmed
+    const eyeR = alarm > 0 ? lerp(14, 18, alarm) : 14;
+    ctx.fillStyle = 'white';
+    ctx.beginPath(); ctx.arc(-14, -42, eyeR, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(14, -42, eyeR, 0, Math.PI*2); ctx.fill();
+
+    // Pupils — look DOWN at fire when alarmed
+    const pupilOY = alarm > 0 ? lerp(0, 8, alarm) : 0;
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath(); ctx.arc(-13, -40+pupilOY, eyeR*0.75, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(15, -40+pupilOY, eyeR*0.75, 0, Math.PI*2); ctx.fill();
+
+    // Eye shine
+    ctx.fillStyle = 'white';
+    ctx.beginPath(); ctx.arc(-17, -45+pupilOY*0.3, 5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(11, -45+pupilOY*0.3, 5, 0, Math.PI*2); ctx.fill();
+
+    // Blink
+    if (blink) {
+      ctx.fillStyle = lerpColor('#e06010','#c03008',roast*0.3+alarm*0.2);
+      ctx.beginPath(); ctx.ellipse(-14, -42, eyeR, eyeR, 0, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(14, -42, eyeR, eyeR, 0, 0, Math.PI*2); ctx.fill();
+    }
+
+    // Sweat drops when alarmed
+    if (alarm > 0.2) drawSweat(ctx, 0, -42);
+
+    // Beak — open in shock when alarmed
+    ctx.fillStyle = '#d07010';
+    ctx.beginPath();
+    ctx.moveTo(-7, -20);
+    ctx.lineTo(0, -8 + alarm*8);
+    ctx.lineTo(7, -20);
+    ctx.closePath(); ctx.fill();
+    if (alarm > 0.3) {
+      ctx.fillStyle = '#8a2020';
+      ctx.beginPath(); ctx.ellipse(0, -14, 5, 4, 0, 0, Math.PI*2); ctx.fill();
+    }
+
+    // Cheek blush
+    ctx.fillStyle = 'rgba(255,80,30,0.18)';
+    ctx.beginPath(); ctx.ellipse(-28, -34, 10, 6, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(28, -34, 10, 6, 0, 0, Math.PI*2); ctx.fill();
+
+    ctx.globalAlpha = 1;
+  }
+
+  ctx.restore();
+}
+
+// Main animation loop
+let birdX = 130, birdY = 115;
+let birdVX = 0.8, birdVY = 0.3;
+let blinkT = 0;
+let isBlinking = false;
+let blinkCooldown = 0;
+
+function frame(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = (ts - startTime) % LOOP;
+  const t = elapsed / LOOP; // 0..1
+
+  // Phase timing
+  const flyEnd    = 0.40; // fly happy 0–40%
+  const alarmEnd  = 0.50; // alarm 40–50%
+  const roastEnd  = 0.70; // roasting 50–70%
+  const chickenEnd= 0.85; // full chicken 70–85%
+  const resetEnd  = 1.00; // poof back 85–100%
+
+  let alarm = 0, roast = 0;
+  let flying = true;
+
+  if (t < flyEnd) {
+    alarm = 0; roast = 0;
+  } else if (t < alarmEnd) {
+    alarm = easeInOut((t - flyEnd) / (alarmEnd - flyEnd));
+    roast = 0;
+    flying = false;
+  } else if (t < roastEnd) {
+    alarm = 1;
+    roast = easeInOut((t - alarmEnd) / (roastEnd - alarmEnd));
+    flying = false;
+  } else if (t < chickenEnd) {
+    alarm = 0; roast = 1;
+    flying = false;
+  } else {
+    // poof! back to bird — fast reverse
+    const p = (t - chickenEnd) / (resetEnd - chickenEnd);
+    roast = 1 - easeInOut(p);
+    alarm = 0;
+    flying = p > 0.5;
+  }
+
+  // Bird position
+  if (flying || t > 0.9) {
+    birdX += birdVX * 1.2;
+    birdY += birdVY * 0.8;
+    if (birdX > 220 || birdX < 40) birdVX *= -1;
+    if (birdY > 160 || birdY < 60) birdVY *= -1;
+  } else {
+    // Hover in center while roasting
+    birdX += (130 - birdX) * 0.04;
+    birdY += (110 - birdY) * 0.04;
+  }
+
+  // Wing flap
+  flapAngle += 0.18;
+  const wingFlap = Math.sin(flapAngle) * (flying ? 0.55 : 0.1);
+
+  // Blink logic
+  blinkT++;
+  blinkCooldown--;
+  if (!isBlinking && blinkCooldown <= 0 && blinkT % 180 < 8) {
+    isBlinking = true; blinkCooldown = 120;
+  }
+  if (blinkT % 180 >= 8) isBlinking = false;
+
+  // Draw
+  bx.clearRect(0, 0, W, H);
+
+  // Flames when roasting
+  if (alarm > 0 || roast > 0) {
+    const flameH = 30 + roast*40;
+    const fa = Math.max(alarm, roast);
+    drawFlame(bx, birdX, birdY + 58, flameH * fa, ts/1000);
+  }
+
+  // Smoke when fully roasted
+  if (roast > 0.5) {
+    drawSmoke(bx, birdX, birdY - 70, (roast-0.5)*2);
+  }
+
+  // Poof particles when resetting
+  if (t > chickenEnd && t < resetEnd) {
+    const p = (t - chickenEnd) / (resetEnd - chickenEnd);
+    if (p < 0.3) {
+      for (let i=0; i<8; i++) {
+        const a = (i/8)*Math.PI*2;
+        const d = p * 60;
+        bx.beginPath();
+        bx.arc(birdX + Math.cos(a)*d, birdY + Math.sin(a)*d, 5*(1-p*3), 0, Math.PI*2);
+        bx.fillStyle = `rgba(255,200,100,${(0.3-p)*3})`;
+        bx.fill();
+      }
+    }
+  }
+
+  drawBird(bx, birdX, birdY, wingFlap, isBlinking, roast, alarm, ts/1000);
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// ── COUNTDOWN ─────────────────────────────────────────────
+const target = new Date('2026-07-31T23:59:59');
+function pad(n) { return String(n).padStart(2, '0'); }
+function tick() {
+  const diff = target - new Date();
+  if (diff <= 0) {
+    document.getElementById('countdown').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+    return;
+  }
+  document.getElementById('days').textContent    = pad(Math.floor(diff / 86400000));
+  document.getElementById('hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
+  document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
+  document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+}
+tick();
+setInterval(tick, 1000);
 </script>
 </body>
 </html>
