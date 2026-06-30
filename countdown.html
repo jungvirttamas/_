@@ -6,7 +6,6 @@
   <title>Visszaszámláló</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       min-height: 100vh;
       background: #050d1a;
@@ -17,142 +16,68 @@
       font-family: 'Georgia', serif;
       overflow: hidden;
     }
-
     canvas.stars {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: none;
+      position: fixed; top:0; left:0;
+      width:100%; height:100%;
+      z-index:0; pointer-events:none;
     }
-
-    .container {
-      text-align: center;
-      z-index: 10;
-      padding: 2rem;
-    }
-
-    /* Bird scene wrapper */
-    .scene {
-      position: relative;
-      width: 260px;
-      height: 230px;
-      margin: 0 auto 1rem;
-    }
-
-    /* The canvas bird flies on */
-    #birdCanvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Motivational text */
+    .container { text-align:center; z-index:10; padding:2rem; }
+    .scene { position:relative; width:240px; height:240px; margin:0 auto 0.5rem; }
+    #birdCanvas { position:absolute; top:0; left:0; width:100%; height:100%; }
     .motto {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #ffffff;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.3rem;
-      text-shadow: 0 0 30px rgba(100,180,255,0.5);
+      font-size:2rem; font-weight:bold; color:#fff;
+      letter-spacing:0.05em; margin-bottom:0.3rem;
+      text-shadow:0 0 30px rgba(100,180,255,0.5);
     }
-
     .sub {
-      font-size: 1rem;
-      color: rgba(160,200,255,0.8);
-      margin-bottom: 0.6rem;
-      letter-spacing: 0.08em;
-      font-style: italic;
+      font-size:1rem; color:rgba(160,200,255,0.8);
+      margin-bottom:0.6rem; letter-spacing:0.08em; font-style:italic;
     }
-
     .deadline {
-      font-size: 0.85rem;
-      color: rgba(120,170,255,0.6);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
+      font-size:0.85rem; color:rgba(120,170,255,0.6);
+      letter-spacing:0.3em; text-transform:uppercase; margin-bottom:2rem;
     }
-
-    .countdown {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
+    .countdown { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
     .box {
-      background: rgba(10,30,70,0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(80,140,255,0.25);
-      border-radius: 18px;
-      padding: 1.2rem 1.6rem;
-      min-width: 95px;
-      box-shadow: 0 0 30px rgba(50,100,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
-      transition: transform 0.15s;
+      background:rgba(10,30,70,0.7); backdrop-filter:blur(12px);
+      border:1px solid rgba(80,140,255,0.25); border-radius:18px;
+      padding:1.2rem 1.6rem; min-width:95px;
+      box-shadow:0 0 30px rgba(50,100,255,0.08),inset 0 1px 0 rgba(255,255,255,0.05);
+      transition:transform 0.15s;
     }
-
-    .box:hover { transform: scale(1.06); }
-
+    .box:hover { transform:scale(1.06); }
     .num {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #7ec8ff;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 0 20px rgba(100,200,255,0.6);
+      font-size:3rem; font-weight:bold; color:#7ec8ff;
+      line-height:1; font-variant-numeric:tabular-nums;
+      text-shadow:0 0 20px rgba(100,200,255,0.6);
     }
-
     .label {
-      font-size: 0.65rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(120,180,255,0.6);
-      margin-top: 0.4rem;
+      font-size:0.65rem; letter-spacing:0.22em;
+      text-transform:uppercase; color:rgba(120,180,255,0.6); margin-top:0.4rem;
     }
-
     .separator {
-      font-size: 2.8rem;
-      color: rgba(100,180,255,0.4);
-      align-self: center;
-      margin-top: -0.4rem;
-      animation: pulse 1s ease-in-out infinite;
+      font-size:2.8rem; color:rgba(100,180,255,0.4);
+      align-self:center; margin-top:-0.4rem;
+      animation:pulse 1s ease-in-out infinite;
     }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
-
-    .done-msg {
-      font-size: 2rem;
-      color: #7ec8ff;
-      font-weight: bold;
-      display: none;
-    }
-
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    .done-msg { font-size:2rem; color:#7ec8ff; font-weight:bold; display:none; }
     footer {
-      margin-top: 2.5rem;
-      font-size: 0.7rem;
-      color: rgba(100,150,255,0.35);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      margin-top:2.5rem; font-size:0.7rem;
+      color:rgba(100,150,255,0.35); letter-spacing:0.15em; text-transform:uppercase;
     }
   </style>
 </head>
 <body>
-
 <canvas class="stars" id="stars"></canvas>
 
 <div class="container">
   <div class="scene">
-    <canvas id="birdCanvas" width="260" height="230"></canvas>
+    <canvas id="birdCanvas" width="240" height="240"></canvas>
   </div>
-
   <div class="motto">Keep going.</div>
   <div class="sub">The finish line is closer than you think.</div>
   <div class="deadline">Július 31.</div>
-
   <div class="countdown" id="countdown">
     <div class="box"><div class="num" id="days">--</div><div class="label">Days</div></div>
     <div class="separator">:</div>
@@ -162,7 +87,6 @@
     <div class="separator">:</div>
     <div class="box"><div class="num" id="seconds">--</div><div class="label">Seconds</div></div>
   </div>
-
   <div class="done-msg" id="done">🎉 You made it! 🎉</div>
   <footer>PureBreathe PRO &nbsp;·&nbsp; 2026</footer>
 </div>
@@ -176,15 +100,15 @@ function resizeStars() {
   starCanvas.width = window.innerWidth;
   starCanvas.height = window.innerHeight;
   stars = [];
-  for (let i = 0; i < 200; i++) {
-    stars.push({ x: Math.random()*starCanvas.width, y: Math.random()*starCanvas.height,
-      r: Math.random()*1.5+0.2, speed: Math.random()*0.004+0.002, phase: Math.random()*Math.PI*2 });
-  }
+  for (let i=0;i<200;i++) stars.push({
+    x:Math.random()*starCanvas.width, y:Math.random()*starCanvas.height,
+    r:Math.random()*1.5+0.2, speed:Math.random()*0.004+0.002, phase:Math.random()*Math.PI*2
+  });
 }
 function drawStars(t) {
   sc.clearRect(0,0,starCanvas.width,starCanvas.height);
   stars.forEach(s => {
-    const a = 0.25 + 0.75*(0.5+0.5*Math.sin(t*s.speed*60+s.phase));
+    const a = 0.25+0.75*(0.5+0.5*Math.sin(t*s.speed*60+s.phase));
     sc.beginPath(); sc.arc(s.x,s.y,s.r,0,Math.PI*2);
     sc.fillStyle=`rgba(180,220,255,${a})`; sc.fill();
   });
@@ -194,390 +118,446 @@ resizeStars();
 window.addEventListener('resize', resizeStars);
 requestAnimationFrame(drawStars);
 
-// ── BIRD ANIMATION ─────────────────────────────────────────
-const bc = document.getElementById('birdCanvas');
-const bx = bc.getContext('2d');
-const W = bc.width, H = bc.height;
+// ── HELPERS ────────────────────────────────────────────────
+function lerp(a,b,t){return a+(b-a)*t;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function easeInOut(t){return t<0.5?2*t*t:-1+(4-2*t)*t;}
 
-// Animation phases (total loop = 10s)
-// 0–4s:   happy flying bird
-// 4–5s:   fire appears, bird looks alarmed (eyes wide)
-// 5–7s:   bird slowly turns golden/brown (roasting)
-// 7–8.5s: full grilled chicken
-// 8.5–10s: back to fluffy orange (poof!)
-
-const LOOP = 10000; // ms
-let startTime = null;
-let flapAngle = 0;
-let blinkTimer = 0;
-let blinking = false;
-
-function easeInOut(t) { return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
-function lerp(a,b,t) { return a+(b-a)*t; }
-function clamp(v,a,b) { return Math.max(a,Math.min(b,v)); }
-
-function lerpColor(c1, c2, t) {
-  const h = x => parseInt(x,16);
-  const r1=h(c1.slice(1,3)),g1=h(c1.slice(3,5)),b1=h(c1.slice(5,7));
-  const r2=h(c2.slice(1,3)),g2=h(c2.slice(3,5)),b2=h(c2.slice(5,7));
-  return `rgb(${Math.round(lerp(r1,r2,t))},${Math.round(lerp(g1,g2,t))},${Math.round(lerp(b1,b2,t))})`;
-}
-
-// Draw fluffy circle (approximated with wobbly path)
-function fluffyCircle(ctx, cx, cy, r, wobble, color) {
+// Draw a fluffy/bumpy circle using many small arcs overlapping
+function fluffyBlob(ctx, cx, cy, r, wobble, color, alpha=1) {
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  // Base circle
+  const g = ctx.createRadialGradient(cx-r*0.3, cy-r*0.3, r*0.1, cx, cy, r);
+  if (typeof color === 'string') {
+    g.addColorStop(0, lighten(color, 0.4));
+    g.addColorStop(0.5, color);
+    g.addColorStop(1, darken(color, 0.35));
+  }
+  // Draw wobbly outline
   ctx.beginPath();
-  const steps = 32;
-  for (let i=0; i<=steps; i++) {
+  const steps = 48;
+  for (let i=0;i<=steps;i++) {
     const angle = (i/steps)*Math.PI*2;
-    const w = wobble * (Math.sin(angle*3+1.2)*0.5 + Math.sin(angle*5)*0.3 + Math.sin(angle*7)*0.2);
-    const rr = r + w;
+    const bump = wobble*(
+      Math.sin(angle*3+0.5)*0.5 +
+      Math.sin(angle*5+1.2)*0.3 +
+      Math.sin(angle*7+0.8)*0.15 +
+      Math.sin(angle*9+2.1)*0.05
+    );
+    const rr = r + bump;
     const x = cx + Math.cos(angle)*rr;
     const y = cy + Math.sin(angle)*rr;
     i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
   }
   ctx.closePath();
-  ctx.fillStyle = color;
+  ctx.fillStyle = typeof color==='string' ? g : color;
   ctx.fill();
-}
-
-function drawFlame(ctx, x, y, h, phase) {
-  const flames = [
-    {ox:-18, w:14, h:h*0.8, p:0},
-    {ox:0,   w:18, h:h,     p:1.1},
-    {ox:18,  w:14, h:h*0.9, p:2.2},
-    {ox:-9,  w:10, h:h*0.6, p:0.7},
-    {ox:9,   w:10, h:h*0.65,p:1.9},
-  ];
-  flames.forEach(f => {
-    const flicker = 1 + 0.15*Math.sin(phase*8+f.p);
-    const fh = f.h * flicker;
-    const grad = ctx.createRadialGradient(x+f.ox, y, 2, x+f.ox, y-fh*0.5, fh);
-    grad.addColorStop(0, 'rgba(255,240,80,0.95)');
-    grad.addColorStop(0.3, 'rgba(255,140,20,0.85)');
-    grad.addColorStop(0.7, 'rgba(220,50,10,0.6)');
-    grad.addColorStop(1, 'rgba(180,20,0,0)');
-    ctx.beginPath();
-    ctx.moveTo(x+f.ox-f.w/2, y);
-    ctx.bezierCurveTo(x+f.ox-f.w*0.6, y-fh*0.4, x+f.ox-f.w*0.2, y-fh*0.8, x+f.ox, y-fh);
-    ctx.bezierCurveTo(x+f.ox+f.w*0.2, y-fh*0.8, x+f.ox+f.w*0.6, y-fh*0.4, x+f.ox+f.w/2, y);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-  });
-}
-
-function drawSmoke(ctx, x, y, alpha) {
-  for (let i=0; i<5; i++) {
-    const sy = y - 20 - i*16;
-    const sx = x + Math.sin(i*1.3)*12;
-    const r = 6+i*4;
-    ctx.beginPath();
-    ctx.arc(sx, sy, r, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(180,180,180,${alpha*(0.25-i*0.04)})`;
-    ctx.fill();
-  }
-}
-
-function drawSweat(ctx, x, y) {
-  // sweat drops
-  [[x+38,y-10],[x-38,y-5]].forEach(([sx,sy]) => {
-    ctx.beginPath();
-    ctx.arc(sx, sy+4, 4, 0, Math.PI*2);
-    ctx.moveTo(sx-3, sy+4);
-    ctx.lineTo(sx, sy);
-    ctx.lineTo(sx+3, sy+4);
-    ctx.fillStyle = 'rgba(100,180,255,0.8)';
-    ctx.fill();
-  });
-}
-
-// Grilled chicken shape
-function drawChicken(ctx, cx, cy, t) {
-  // body — plump oval, golden brown
-  const bodyColor = lerpColor('#c05008', '#7a3000', t);
-  const skinColor = lerpColor('#d4820a', '#a05020', t);
-  ctx.save();
-  // drum sticks
-  ctx.fillStyle = lerpColor('#b04000','#5a1800',t);
-  ctx.beginPath(); ctx.ellipse(cx-30, cy+38, 8, 18, -0.4, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+30, cy+38, 8, 18, 0.4, 0, Math.PI*2); ctx.fill();
-  // bone nubs
-  ctx.fillStyle = '#f0e0c0';
-  ctx.beginPath(); ctx.arc(cx-34, cy+54, 5, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(cx+34, cy+54, 5, 0, Math.PI*2); ctx.fill();
-  // main body
-  const bg = ctx.createRadialGradient(cx-10, cy-10, 5, cx, cy, 52);
-  bg.addColorStop(0, lerpColor('#e09030','#b06820',t));
-  bg.addColorStop(0.5, lerpColor('#c06010','#8a3808',t));
-  bg.addColorStop(1, lerpColor('#7a3000','#3a1000',t));
-  ctx.beginPath(); ctx.ellipse(cx, cy+5, 50, 48, 0, 0, Math.PI*2);
-  ctx.fillStyle = bg; ctx.fill();
-  // grill marks
-  ctx.strokeStyle = `rgba(40,10,0,${t*0.6})`;
-  ctx.lineWidth = 3;
-  ctx.lineCap = 'round';
-  [[-20,0],[0,0],[20,0]].forEach(([dx]) => {
-    ctx.beginPath();
-    ctx.moveTo(cx+dx-12, cy-15);
-    ctx.lineTo(cx+dx+12, cy+15);
-    ctx.stroke();
-  });
-  // wings (stubby)
-  ctx.fillStyle = lerpColor('#b05008','#6a2800',t);
-  ctx.beginPath(); ctx.ellipse(cx-46, cy, 14, 22, -0.3, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+46, cy, 14, 22, 0.3, 0, Math.PI*2); ctx.fill();
-  // head
-  const hg = ctx.createRadialGradient(cx+5, cy-52, 3, cx, cy-50, 26);
-  hg.addColorStop(0, lerpColor('#d07010','#9a4010',t));
-  hg.addColorStop(1, lerpColor('#8a3800','#3a1000',t));
-  ctx.beginPath(); ctx.arc(cx, cy-50, 26, 0, Math.PI*2);
-  ctx.fillStyle = hg; ctx.fill();
-  // eyes — Xs when fully cooked
-  if (t > 0.7) {
-    ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3;
-    [[cx-10,cy-52],[cx+10,cy-52]].forEach(([ex,ey]) => {
-      ctx.beginPath(); ctx.moveTo(ex-4,ey-4); ctx.lineTo(ex+4,ey+4); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(ex+4,ey-4); ctx.lineTo(ex-4,ey+4); ctx.stroke();
-    });
-  } else {
-    ctx.fillStyle = 'white';
-    ctx.beginPath(); ctx.arc(cx-10, cy-52, 7, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+10, cy-52, 7, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#1a0a00';
-    ctx.beginPath(); ctx.arc(cx-9, cy-51, 4, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+11, cy-51, 4, 0, Math.PI*2); ctx.fill();
-  }
-  // beak
-  ctx.fillStyle = lerpColor('#d08020','#8a5010',t);
-  ctx.beginPath(); ctx.moveTo(cx-5,cy-38); ctx.lineTo(cx,cy-30); ctx.lineTo(cx+5,cy-38); ctx.closePath(); ctx.fill();
   ctx.restore();
 }
 
-function drawBird(ctx, cx, cy, flapA, blink, roast, alarm, phase) {
+function lighten(hex, amt) {
+  let [r,g,b] = hexRGB(hex);
+  return `rgb(${Math.min(255,r+255*amt)},${Math.min(255,g+255*amt)},${Math.min(255,b+255*amt)})`;
+}
+function darken(hex, amt) {
+  let [r,g,b] = hexRGB(hex);
+  return `rgb(${Math.max(0,r-255*amt)},${Math.max(0,g-255*amt)},${Math.max(0,b-255*amt)})`;
+}
+function hexRGB(hex) {
+  if (hex.startsWith('rgb')) {
+    const m = hex.match(/\d+/g); return [+m[0],+m[1],+m[2]];
+  }
+  const h = hex.replace('#','');
+  return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];
+}
+function lerpColor(c1,c2,t) {
+  const [r1,g1,b1]=hexRGB(c1),[r2,g2,b2]=hexRGB(c2);
+  return `rgb(${Math.round(lerp(r1,r2,t))},${Math.round(lerp(g1,g2,t))},${Math.round(lerp(b1,b2,t))})`;
+}
+
+// ── DRAW FLUFFY BIRD ───────────────────────────────────────
+function drawFluffyBird(ctx, cx, cy, flapA, blink, alarm) {
   ctx.save();
   ctx.translate(cx, cy);
 
-  if (roast > 0.01) {
-    // Crossfade between fluffy and chicken
-    ctx.globalAlpha = roast;
-    drawChicken(ctx, 0, 0, roast);
-    ctx.globalAlpha = 1;
+  const bodyC  = alarm > 0 ? lerpColor('#e06010','#e03000',alarm*0.6) : '#e06010';
+  const lightC = alarm > 0 ? lerpColor('#ff9a40','#ff5020',alarm*0.5) : '#ff9a40';
+  const darkC  = alarm > 0 ? lerpColor('#b04000','#801000',alarm*0.5) : '#b04000';
+  const bellyC = alarm > 0 ? lerpColor('#ffc870','#ff9020',alarm*0.4) : '#ffc870';
+
+  // Shadow
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  ctx.beginPath(); ctx.ellipse(0, 72, 44, 7, 0, 0, Math.PI*2);
+  ctx.fillStyle = '#000030'; ctx.fill();
+  ctx.restore();
+
+  // Feet
+  ctx.strokeStyle='#c04800'; ctx.lineWidth=3; ctx.lineCap='round';
+  [[-18,55],[18,55]].forEach(([fx,fy])=>{
+    ctx.beginPath(); ctx.moveTo(fx,fy); ctx.lineTo(fx,70); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(fx,70); ctx.lineTo(fx-10,75); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(fx,70); ctx.lineTo(fx+4,76); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(fx,70); ctx.lineTo(fx-4,78); ctx.stroke();
+  });
+
+  // Wings — flapping
+  ctx.save();
+  ctx.translate(-62, 10);
+  ctx.rotate(-flapA * 0.8);
+  fluffyBlob(ctx, 0, 0, 26, 6, darkC);
+  fluffyBlob(ctx, -8, -4, 16, 4, bodyC, 0.7);
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(62, 10);
+  ctx.rotate(flapA * 0.8);
+  fluffyBlob(ctx, 0, 0, 26, 6, darkC);
+  fluffyBlob(ctx, 8, -4, 16, 4, bodyC, 0.7);
+  ctx.restore();
+
+  // Body — big round fluffy
+  fluffyBlob(ctx, 0, 14, 60, 9, bodyC);
+  fluffyBlob(ctx, 0, 14, 56, 7, lightC, 0.45);
+
+  // Belly (lighter patch)
+  ctx.save();
+  const bg = ctx.createRadialGradient(-2, 8, 5, 0, 18, 38);
+  bg.addColorStop(0, bellyC);
+  bg.addColorStop(1, 'rgba(210,140,30,0)');
+  ctx.beginPath(); ctx.ellipse(0, 22, 28, 34, 0, 0, Math.PI*2);
+  ctx.fillStyle = bg; ctx.fill();
+  ctx.restore();
+
+  // Head
+  fluffyBlob(ctx, 2, -38, 42, 8, bodyC);
+  fluffyBlob(ctx, 2, -38, 38, 6, lightC, 0.4);
+
+  // Crest feathers on top
+  const crests = [
+    {ox:-14, oy:-74, rx:7, ry:16, rot:-0.35},
+    {ox:-2,  oy:-80, rx:8, ry:18, rot:-0.05},
+    {ox:12,  oy:-76, rx:7, ry:15, rot:0.25},
+    {ox:22,  oy:-68, rx:5, ry:12, rot:0.5},
+  ];
+  crests.forEach(c => {
+    ctx.save();
+    ctx.translate(c.ox, c.oy);
+    ctx.rotate(c.rot);
+    fluffyBlob(ctx, 0, 0, (c.rx+c.ry)/2, 3, darkC);
+    ctx.restore();
+  });
+
+  // Eyes — big and round like the original
+  const eyeR = alarm > 0 ? lerp(16, 20, alarm) : 16;
+  // Whites
+  ctx.fillStyle='white';
+  ctx.beginPath(); ctx.arc(-16,-44,eyeR,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(20,-44,eyeR,0,Math.PI*2); ctx.fill();
+
+  // Pupils — look down at fire when alarmed
+  const pupilOY = lerp(0, 10, alarm);
+  ctx.fillStyle='#1a0500';
+  ctx.beginPath(); ctx.arc(-14,-42+pupilOY,eyeR*0.78,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(22,-42+pupilOY,eyeR*0.78,0,Math.PI*2); ctx.fill();
+
+  // Eye shine (big + small)
+  ctx.fillStyle='rgba(255,255,255,0.9)';
+  ctx.beginPath(); ctx.arc(-20,-48+pupilOY*0.3,5.5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(16,-48+pupilOY*0.3,5.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='white';
+  ctx.beginPath(); ctx.arc(-18,-46+pupilOY*0.3,2.5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(18,-46+pupilOY*0.3,2.5,0,Math.PI*2); ctx.fill();
+
+  // Blink overlay
+  if (blink) {
+    ctx.fillStyle = bodyC;
+    ctx.beginPath(); ctx.arc(-16,-44,eyeR+1,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(20,-44,eyeR+1,0,Math.PI*2); ctx.fill();
   }
 
-  if (roast < 0.99) {
-    ctx.globalAlpha = 1 - roast;
+  // Beak — pointing down, small triangle
+  ctx.fillStyle='#e07820';
+  ctx.beginPath();
+  ctx.moveTo(-6,-24); ctx.lineTo(2,-10+alarm*6); ctx.lineTo(10,-24);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#b05800'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(-6,-24); ctx.lineTo(10,-24); ctx.stroke();
 
-    // Body color shifts orange→red when alarmed
-    const bodyCol = alarm > 0
-      ? lerpColor('#e06010', '#ff2000', Math.min(alarm*2,1))
-      : '#e06010';
+  // Cheek blush
+  ctx.save();
+  ctx.globalAlpha=0.22;
+  ctx.fillStyle='#ff5020';
+  ctx.beginPath(); ctx.ellipse(-34,-36,12,7,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(36,-36,12,7,0,0,Math.PI*2); ctx.fill();
+  ctx.restore();
 
-    // Fluffy body
-    fluffyCircle(ctx, 0, 18, 58, 8, lerpColor('#ffaa50', '#c05008', roast*0.5+alarm*0.3));
-    fluffyCircle(ctx, 0, 18, 54, 7, lerpColor('#e06010', '#a03808', roast*0.5+alarm*0.3));
-
-    // Belly
-    const bellyG = ctx.createRadialGradient(-5, 5, 5, 0, 15, 38);
-    bellyG.addColorStop(0, lerpColor('#ffd080','#ff8020',alarm*0.5));
-    bellyG.addColorStop(1, lerpColor('#d07020','#c04010',alarm*0.3));
-    ctx.beginPath(); ctx.ellipse(2, 28, 30, 36, 0, 0, Math.PI*2);
-    ctx.fillStyle = bellyG; ctx.fill();
-
-    // Wings flapping
-    ctx.save();
-    ctx.translate(-64, 18);
-    ctx.rotate(flapA);
-    fluffyCircle(ctx, 0, 0, 22, 5, lerpColor('#c05008','#8a2000',roast*0.3+alarm*0.2));
-    ctx.restore();
-
-    ctx.save();
-    ctx.translate(64, 18);
-    ctx.rotate(-flapA);
-    fluffyCircle(ctx, 0, 0, 22, 5, lerpColor('#c05008','#8a2000',roast*0.3+alarm*0.2));
-    ctx.restore();
-
-    // Head
-    fluffyCircle(ctx, 0, -38, 38, 7, lerpColor('#e06010','#c03008',roast*0.3+alarm*0.2));
-
-    // Crest
-    [-22, -8, 8, 22].forEach((ox, i) => {
-      const h = [18,22,20,14][i];
-      const a = [-0.5,-0.1,0.1,0.4][i];
-      ctx.save(); ctx.translate(ox, -70); ctx.rotate(a);
-      fluffyCircle(ctx, 0, 0, h*0.45, 4, lerpColor('#c04808','#a02000',roast*0.3));
-      ctx.restore();
+  // Sweat drops when alarmed
+  if (alarm > 0.3) {
+    ctx.save(); ctx.globalAlpha = alarm;
+    [[42,-38],[-46,-32]].forEach(([sx,sy])=>{
+      ctx.fillStyle='rgba(100,180,255,0.85)';
+      ctx.beginPath();
+      ctx.arc(sx,sy+5,4,0,Math.PI*2); ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(sx-3,sy+5); ctx.lineTo(sx,sy); ctx.lineTo(sx+3,sy+5);
+      ctx.closePath(); ctx.fill();
     });
-
-    // Eyes — wide when alarmed
-    const eyeR = alarm > 0 ? lerp(14, 18, alarm) : 14;
-    ctx.fillStyle = 'white';
-    ctx.beginPath(); ctx.arc(-14, -42, eyeR, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(14, -42, eyeR, 0, Math.PI*2); ctx.fill();
-
-    // Pupils — look DOWN at fire when alarmed
-    const pupilOY = alarm > 0 ? lerp(0, 8, alarm) : 0;
-    ctx.fillStyle = '#1a0a00';
-    ctx.beginPath(); ctx.arc(-13, -40+pupilOY, eyeR*0.75, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(15, -40+pupilOY, eyeR*0.75, 0, Math.PI*2); ctx.fill();
-
-    // Eye shine
-    ctx.fillStyle = 'white';
-    ctx.beginPath(); ctx.arc(-17, -45+pupilOY*0.3, 5, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(11, -45+pupilOY*0.3, 5, 0, Math.PI*2); ctx.fill();
-
-    // Blink
-    if (blink) {
-      ctx.fillStyle = lerpColor('#e06010','#c03008',roast*0.3+alarm*0.2);
-      ctx.beginPath(); ctx.ellipse(-14, -42, eyeR, eyeR, 0, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(14, -42, eyeR, eyeR, 0, 0, Math.PI*2); ctx.fill();
-    }
-
-    // Sweat drops when alarmed
-    if (alarm > 0.2) drawSweat(ctx, 0, -42);
-
-    // Beak — open in shock when alarmed
-    ctx.fillStyle = '#d07010';
-    ctx.beginPath();
-    ctx.moveTo(-7, -20);
-    ctx.lineTo(0, -8 + alarm*8);
-    ctx.lineTo(7, -20);
-    ctx.closePath(); ctx.fill();
-    if (alarm > 0.3) {
-      ctx.fillStyle = '#8a2020';
-      ctx.beginPath(); ctx.ellipse(0, -14, 5, 4, 0, 0, Math.PI*2); ctx.fill();
-    }
-
-    // Cheek blush
-    ctx.fillStyle = 'rgba(255,80,30,0.18)';
-    ctx.beginPath(); ctx.ellipse(-28, -34, 10, 6, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(28, -34, 10, 6, 0, 0, Math.PI*2); ctx.fill();
-
-    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 
   ctx.restore();
 }
 
-// Main animation loop
-let birdX = 130, birdY = 115;
-let birdVX = 0.8, birdVY = 0.3;
-let blinkT = 0;
-let isBlinking = false;
-let blinkCooldown = 0;
+// ── DRAW GRILLED CHICKEN ───────────────────────────────────
+function drawGrilledChicken(ctx, cx, cy) {
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // Drumsticks
+  function drumstick(ox, angle) {
+    ctx.save(); ctx.translate(ox, 40); ctx.rotate(angle);
+    // Meat part
+    const mg = ctx.createRadialGradient(-4,-5,3,0,0,18);
+    mg.addColorStop(0,'#c8640a'); mg.addColorStop(0.5,'#a04808'); mg.addColorStop(1,'#5a2200');
+    ctx.beginPath(); ctx.ellipse(0,0,13,20,0,0,Math.PI*2);
+    ctx.fillStyle=mg; ctx.fill();
+    // Grill marks on drumstick
+    ctx.strokeStyle='rgba(30,8,0,0.55)'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-8,-10); ctx.lineTo(8,4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-8,-2); ctx.lineTo(8,12); ctx.stroke();
+    // Bone
+    ctx.fillStyle='#f5e8cc';
+    ctx.beginPath(); ctx.ellipse(0,26,5,10,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#e8d8b0';
+    ctx.beginPath(); ctx.arc(0,35,7,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+  drumstick(-32, -0.2);
+  drumstick(32, 0.2);
+
+  // Main body
+  const bg = ctx.createRadialGradient(-15,-10,5,0,0,60);
+  bg.addColorStop(0,'#d4780a');
+  bg.addColorStop(0.4,'#b05010');
+  bg.addColorStop(0.75,'#7a3208');
+  bg.addColorStop(1,'#3a1200');
+  ctx.beginPath(); ctx.ellipse(0,8,54,48,0,0,Math.PI*2);
+  ctx.fillStyle=bg; ctx.fill();
+
+  // Crispy skin texture — lighter highlight on top
+  const skin = ctx.createRadialGradient(-10,-15,5,0,0,45);
+  skin.addColorStop(0,'rgba(255,190,80,0.45)');
+  skin.addColorStop(0.5,'rgba(220,120,20,0.15)');
+  skin.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath(); ctx.ellipse(0,8,54,48,0,0,Math.PI*2);
+  ctx.fillStyle=skin; ctx.fill();
+
+  // Grill marks — diagonal stripes
+  ctx.save();
+  ctx.beginPath(); ctx.ellipse(0,8,54,48,0,0,Math.PI*2); ctx.clip();
+  ctx.strokeStyle='rgba(25,6,0,0.55)'; ctx.lineWidth=5; ctx.lineCap='butt';
+  for (let i=-80;i<=80;i+=22) {
+    ctx.beginPath(); ctx.moveTo(i,-50); ctx.lineTo(i+50,50); ctx.stroke();
+  }
+  // Second direction
+  ctx.strokeStyle='rgba(25,6,0,0.25)'; ctx.lineWidth=3;
+  for (let i=-80;i<=80;i+=22) {
+    ctx.beginPath(); ctx.moveTo(i+50,-50); ctx.lineTo(i,50); ctx.stroke();
+  }
+  ctx.restore();
+
+  // Wings — small tucked on sides
+  function wing(ox, angle) {
+    ctx.save(); ctx.translate(ox, 0); ctx.rotate(angle);
+    const wg = ctx.createRadialGradient(-5,-5,2,0,0,22);
+    wg.addColorStop(0,'#b06018'); wg.addColorStop(1,'#5a2808');
+    ctx.beginPath(); ctx.ellipse(0,0,20,12,0,0,Math.PI*2);
+    ctx.fillStyle=wg; ctx.fill();
+    // grill marks
+    ctx.strokeStyle='rgba(25,6,0,0.4)'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-10,-4); ctx.lineTo(6,6); ctx.stroke();
+    ctx.restore();
+  }
+  wing(-54, 0.15);
+  wing(54, -0.15);
+
+  // Neck
+  const ng = ctx.createRadialGradient(0,-42,3,0,-50,18);
+  ng.addColorStop(0,'#c06010'); ng.addColorStop(1,'#6a2808');
+  ctx.beginPath(); ctx.ellipse(0,-44,12,16,0,0,Math.PI*2);
+  ctx.fillStyle=ng; ctx.fill();
+
+  // Head — small and round
+  const hg = ctx.createRadialGradient(-8,-72,4,0,-68,22);
+  hg.addColorStop(0,'#c86818'); hg.addColorStop(0.5,'#9a4210'); hg.addColorStop(1,'#4a1808');
+  ctx.beginPath(); ctx.arc(0,-68,22,0,Math.PI*2);
+  ctx.fillStyle=hg; ctx.fill();
+
+  // Crispy highlight on head
+  ctx.save(); ctx.globalAlpha=0.3;
+  ctx.beginPath(); ctx.arc(-6,-74,12,0,Math.PI*2);
+  ctx.fillStyle='#ffa030'; ctx.fill();
+  ctx.restore();
+
+  // Eyes — X X (cooked)
+  ctx.strokeStyle='rgba(10,2,0,0.8)'; ctx.lineWidth=3; ctx.lineCap='round';
+  [[-10,-70],[10,-70]].forEach(([ex,ey])=>{
+    ctx.beginPath(); ctx.moveTo(ex-5,ey-5); ctx.lineTo(ex+5,ey+5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ex+5,ey-5); ctx.lineTo(ex-5,ey+5); ctx.stroke();
+  });
+
+  // Beak — small
+  ctx.fillStyle='#b06020';
+  ctx.beginPath(); ctx.moveTo(-5,-58); ctx.lineTo(0,-50); ctx.lineTo(5,-58); ctx.closePath(); ctx.fill();
+
+  // Steam wisps
+  [[-15,-92],[0,-96],[15,-92]].forEach(([sx,sy],i)=>{
+    ctx.save(); ctx.globalAlpha=0.35;
+    ctx.strokeStyle='#cccccc'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath();
+    ctx.moveTo(sx,sy);
+    ctx.bezierCurveTo(sx-6,sy-12,sx+6,sy-24,sx,sy-36);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  ctx.restore();
+}
+
+// ── FLAMES ────────────────────────────────────────────────
+function drawFlame(ctx, x, y, height, time) {
+  const flames=[
+    {ox:-22,w:16,h:height*0.75,p:0},
+    {ox:-8, w:20,h:height,    p:1.1},
+    {ox:8,  w:20,h:height*0.9,p:2.0},
+    {ox:22, w:16,h:height*0.8,p:3.1},
+    {ox:0,  w:12,h:height*0.6,p:0.5},
+  ];
+  flames.forEach(f=>{
+    const flicker = 1+0.12*Math.sin(time*7+f.p);
+    const fh = f.h*flicker;
+    const grad = ctx.createRadialGradient(x+f.ox,y,2,x+f.ox,y-fh*0.5,fh);
+    grad.addColorStop(0,'rgba(255,250,100,0.98)');
+    grad.addColorStop(0.25,'rgba(255,160,20,0.9)');
+    grad.addColorStop(0.6,'rgba(230,60,10,0.7)');
+    grad.addColorStop(1,'rgba(150,10,0,0)');
+    ctx.beginPath();
+    ctx.moveTo(x+f.ox-f.w/2,y);
+    ctx.bezierCurveTo(x+f.ox-f.w*0.6,y-fh*0.35,x+f.ox-f.w*0.15,y-fh*0.85,x+f.ox,y-fh);
+    ctx.bezierCurveTo(x+f.ox+f.w*0.15,y-fh*0.85,x+f.ox+f.w*0.6,y-fh*0.35,x+f.ox+f.w/2,y);
+    ctx.closePath();
+    ctx.fillStyle=grad; ctx.fill();
+  });
+}
+
+// ── MAIN BIRD LOOP ─────────────────────────────────────────
+const bc  = document.getElementById('birdCanvas');
+const bx  = bc.getContext('2d');
+const W=bc.width, H=bc.height;
+const LOOP=10000;
+let startTime=null;
+let bx_=130, by_=120, bvx=0.9, bvy=0.35;
+let flapT=0, blinkT=0, isBlinking=false, blinkCool=0;
 
 function frame(ts) {
-  if (!startTime) startTime = ts;
-  const elapsed = (ts - startTime) % LOOP;
-  const t = elapsed / LOOP; // 0..1
+  if (!startTime) startTime=ts;
+  const elapsed=(ts-startTime)%LOOP;
+  const t=elapsed/LOOP;
 
-  // Phase timing
-  const flyEnd    = 0.40; // fly happy 0–40%
-  const alarmEnd  = 0.50; // alarm 40–50%
-  const roastEnd  = 0.70; // roasting 50–70%
-  const chickenEnd= 0.85; // full chicken 70–85%
-  const resetEnd  = 1.00; // poof back 85–100%
+  // Phase timings
+  const P_FLY=0.40, P_ALARM=0.50, P_ROAST=0.70, P_CHICKEN=0.85, P_POOF=1.0;
 
-  let alarm = 0, roast = 0;
-  let flying = true;
-
-  if (t < flyEnd) {
-    alarm = 0; roast = 0;
-  } else if (t < alarmEnd) {
-    alarm = easeInOut((t - flyEnd) / (alarmEnd - flyEnd));
-    roast = 0;
-    flying = false;
-  } else if (t < roastEnd) {
-    alarm = 1;
-    roast = easeInOut((t - alarmEnd) / (roastEnd - alarmEnd));
-    flying = false;
-  } else if (t < chickenEnd) {
-    alarm = 0; roast = 1;
-    flying = false;
+  let alarm=0, roast=0, flying=true;
+  if (t<P_FLY) {
+    alarm=0; roast=0;
+  } else if (t<P_ALARM) {
+    alarm=easeInOut((t-P_FLY)/(P_ALARM-P_FLY)); roast=0; flying=false;
+  } else if (t<P_ROAST) {
+    alarm=1; roast=easeInOut((t-P_ALARM)/(P_ROAST-P_ALARM)); flying=false;
+  } else if (t<P_CHICKEN) {
+    alarm=0; roast=1; flying=false;
   } else {
-    // poof! back to bird — fast reverse
-    const p = (t - chickenEnd) / (resetEnd - chickenEnd);
-    roast = 1 - easeInOut(p);
-    alarm = 0;
-    flying = p > 0.5;
+    const p=(t-P_CHICKEN)/(P_POOF-P_CHICKEN);
+    roast=1-easeInOut(p); alarm=0; flying=p>0.6;
   }
 
-  // Bird position
-  if (flying || t > 0.9) {
-    birdX += birdVX * 1.2;
-    birdY += birdVY * 0.8;
-    if (birdX > 220 || birdX < 40) birdVX *= -1;
-    if (birdY > 160 || birdY < 60) birdVY *= -1;
+  // Move bird
+  if (flying) {
+    bx_+=bvx*1.1; by_+=bvy*0.9;
+    if (bx_>195||bx_<45) bvx*=-1;
+    if (by_>175||by_<65) bvy*=-1;
   } else {
-    // Hover in center while roasting
-    birdX += (130 - birdX) * 0.04;
-    birdY += (110 - birdY) * 0.04;
+    bx_+=((W/2)-bx_)*0.05;
+    by_+=(115-by_)*0.05;
   }
 
-  // Wing flap
-  flapAngle += 0.18;
-  const wingFlap = Math.sin(flapAngle) * (flying ? 0.55 : 0.1);
+  // Flap
+  flapT+=0.2;
+  const flapA = Math.sin(flapT)*(flying?0.6:0.08);
 
-  // Blink logic
-  blinkT++;
-  blinkCooldown--;
-  if (!isBlinking && blinkCooldown <= 0 && blinkT % 180 < 8) {
-    isBlinking = true; blinkCooldown = 120;
+  // Blink
+  blinkT++; blinkCool--;
+  if (!isBlinking && blinkCool<=0 && blinkT%200<8) { isBlinking=true; blinkCool=140; }
+  if (blinkT%200>=8) isBlinking=false;
+
+  bx.clearRect(0,0,W,H);
+
+  if (roast < 0.98) {
+    // Flames when alarmed/roasting
+    if (alarm>0 || roast>0) {
+      const fh = lerp(20, 55, Math.max(alarm, roast));
+      drawFlame(bx, bx_, by_+62, fh, ts/1000);
+    }
+    // Fluffy bird (fades out as roast increases)
+    bx.save(); bx.globalAlpha = 1-roast;
+    drawFluffyBird(bx, bx_, by_, flapA, isBlinking && roast<0.05, alarm);
+    bx.restore();
   }
-  if (blinkT % 180 >= 8) isBlinking = false;
 
-  // Draw
-  bx.clearRect(0, 0, W, H);
-
-  // Flames when roasting
-  if (alarm > 0 || roast > 0) {
-    const flameH = 30 + roast*40;
-    const fa = Math.max(alarm, roast);
-    drawFlame(bx, birdX, birdY + 58, flameH * fa, ts/1000);
-  }
-
-  // Smoke when fully roasted
-  if (roast > 0.5) {
-    drawSmoke(bx, birdX, birdY - 70, (roast-0.5)*2);
+  if (roast > 0.02) {
+    // Grilled chicken (fades in)
+    bx.save(); bx.globalAlpha = Math.min(roast*1.5, 1);
+    drawGrilledChicken(bx, bx_, by_-10);
+    bx.restore();
   }
 
   // Poof particles when resetting
-  if (t > chickenEnd && t < resetEnd) {
-    const p = (t - chickenEnd) / (resetEnd - chickenEnd);
-    if (p < 0.3) {
-      for (let i=0; i<8; i++) {
-        const a = (i/8)*Math.PI*2;
-        const d = p * 60;
+  if (t>P_CHICKEN) {
+    const p=(t-P_CHICKEN)/(P_POOF-P_CHICKEN);
+    if (p<0.4) {
+      for (let i=0;i<10;i++) {
+        const a=(i/10)*Math.PI*2;
+        const d=p*80;
+        const pr=7*(1-p/0.4);
         bx.beginPath();
-        bx.arc(birdX + Math.cos(a)*d, birdY + Math.sin(a)*d, 5*(1-p*3), 0, Math.PI*2);
-        bx.fillStyle = `rgba(255,200,100,${(0.3-p)*3})`;
+        bx.arc(bx_+Math.cos(a)*d, by_+Math.sin(a)*d, pr, 0, Math.PI*2);
+        bx.fillStyle=`rgba(255,${180+i*7},80,${(0.4-p)*2.5})`;
         bx.fill();
       }
     }
   }
-
-  drawBird(bx, birdX, birdY, wingFlap, isBlinking, roast, alarm, ts/1000);
 
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
 
 // ── COUNTDOWN ─────────────────────────────────────────────
-const target = new Date('2026-07-31T23:59:59');
-function pad(n) { return String(n).padStart(2, '0'); }
-function tick() {
-  const diff = target - new Date();
-  if (diff <= 0) {
-    document.getElementById('countdown').style.display = 'none';
-    document.getElementById('done').style.display = 'block';
-    return;
+const target=new Date('2026-07-31T23:59:59');
+function pad(n){return String(n).padStart(2,'0');}
+function tick(){
+  const diff=target-new Date();
+  if(diff<=0){
+    document.getElementById('countdown').style.display='none';
+    document.getElementById('done').style.display='block'; return;
   }
-  document.getElementById('days').textContent    = pad(Math.floor(diff / 86400000));
-  document.getElementById('hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
-  document.getElementById('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
-  document.getElementById('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+  document.getElementById('days').textContent   =pad(Math.floor(diff/86400000));
+  document.getElementById('hours').textContent  =pad(Math.floor((diff%86400000)/3600000));
+  document.getElementById('minutes').textContent=pad(Math.floor((diff%3600000)/60000));
+  document.getElementById('seconds').textContent=pad(Math.floor((diff%60000)/1000));
 }
-tick();
-setInterval(tick, 1000);
+tick(); setInterval(tick,1000);
 </script>
 </body>
 </html>
