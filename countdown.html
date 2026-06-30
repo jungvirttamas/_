@@ -36,13 +36,17 @@
     /* Bird */
     .bird-wrap {
       margin-bottom: 1rem;
-      animation: bobble 3.5s ease-in-out infinite;
       filter: drop-shadow(0 0 30px rgba(100,160,255,0.3));
+      position: relative;
+      animation: fly 6s ease-in-out infinite;
     }
 
-    @keyframes bobble {
-      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-      50% { transform: translateY(-16px) rotate(1.5deg); }
+    @keyframes fly {
+      0%   { transform: translateX(-60px) translateY(0px); }
+      25%  { transform: translateX(0px)   translateY(-20px); }
+      50%  { transform: translateX(60px)  translateY(0px); }
+      75%  { transform: translateX(0px)   translateY(20px); }
+      100% { transform: translateX(-60px) translateY(0px); }
     }
 
     .bird-wrap svg { width: 200px; height: 200px; }
@@ -54,6 +58,24 @@
     @keyframes blink {
       0%, 88%, 100% { transform: scaleY(0); }
       93% { transform: scaleY(1); }
+    }
+
+    /* Wing flap */
+    .wing-left {
+      transform-origin: 55px 115px;
+      animation: flapL 0.4s ease-in-out infinite alternate;
+    }
+    .wing-right {
+      transform-origin: 145px 115px;
+      animation: flapR 0.4s ease-in-out infinite alternate;
+    }
+    @keyframes flapL {
+      0%   { transform: rotate(0deg) scaleY(1); }
+      100% { transform: rotate(-35deg) scaleY(0.6); }
+    }
+    @keyframes flapR {
+      0%   { transform: rotate(0deg) scaleY(1); }
+      100% { transform: rotate(35deg) scaleY(0.6); }
     }
 
     /* Motivational text */
@@ -211,12 +233,17 @@
       <!-- Belly -->
       <ellipse cx="102" cy="128" rx="36" ry="42" fill="url(#belly2)" opacity="0.75"/>
 
-      <!-- Left wing — raised up (determined/cheering pose) -->
-      <ellipse cx="28" cy="95" rx="26" ry="16" fill="url(#wing2)" transform="rotate(-55 28 95)" filter="url(#f1)" opacity="0.9"/>
-      <ellipse cx="22" cy="80" rx="14" ry="8" fill="#d06010" transform="rotate(-60 22 80)" filter="url(#f1)"/>
+      <!-- Left wing — flapping -->
+      <g class="wing-left">
+        <ellipse cx="36" cy="115" rx="38" ry="14" fill="url(#wing2)" transform="rotate(-20 36 115)" filter="url(#f1)" opacity="0.9"/>
+        <ellipse cx="22" cy="100" rx="20" ry="9" fill="#c05008" transform="rotate(-30 22 100)" filter="url(#f1)"/>
+      </g>
 
-      <!-- Right wing — normal -->
-      <ellipse cx="162" cy="128" rx="24" ry="16" fill="url(#wing2)" transform="rotate(15 162 128)" filter="url(#f1)" opacity="0.85"/>
+      <!-- Right wing — flapping -->
+      <g class="wing-right">
+        <ellipse cx="164" cy="115" rx="38" ry="14" fill="url(#wing2)" transform="rotate(20 164 115)" filter="url(#f1)" opacity="0.85"/>
+        <ellipse cx="178" cy="100" rx="20" ry="9" fill="#c05008" transform="rotate(30 178 100)" filter="url(#f1)"/>
+      </g>
 
       <!-- Head fluffy -->
       <circle cx="100" cy="82" r="50" fill="#e06010" filter="url(#f1)" opacity="0.55"/>
